@@ -26,7 +26,27 @@ exports.login = async (req, res) => {
             res.status(401).render('login',{
                 message: 'Eamil or Password is incorrect'
             })
+        
+            
 
+        }
+        else{
+            const id = results[0].id;
+
+            const token = jwt.sign({ id }, process.env.JWT_SECRET {
+                expiresIn: process.env.JWT_EXPIRES_IN
+            });
+
+            console.log("The token is:" + token);
+
+            const cookieOptions = {
+                expires: new Date(
+                   Date.noe() + process.env.JWT_COOKIE_EXPIRES *24 *60 *60 *1000 
+                ),
+                httpOnly: true
+            }
+            res.cookie('jwt', token, cookieOption);
+            res.status(200).redirect("/");
         }
 
      })
